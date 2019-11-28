@@ -1,30 +1,56 @@
 package com.yenoxx.ht9k.scene;
 
 import com.yenoxx.ht9k.ResourceManager;
+import com.yenoxx.ht9k.graphics.Sprite;
+import com.yenoxx.ht9k.object.EnemyTank;
+import com.yenoxx.ht9k.object.GObject;
 import com.yenoxx.ht9k.object.PlayerTank;
 import com.yenoxx.ht9k.object.Wall;
 
 public class LevelScene extends Scene {
     public static final String[][] LEVELS = {
             {
-                    "##########",
-                    "#______P_#",
-                    "#_########",
-                    "#____#___#",
-                    "##_####__#",
-                    "##_#__#__#",
-                    "#________#",
-                    "##########",
-            }
+                    "####################",
+                    "#  #  # P#  #  #   #",
+                    "# E## #  #  #  ##  #",
+                    "#     #    E#    E #",
+                    "# ##      ######   #",
+                    "#  #  E     # E    #",
+                    "#E ##### ####    ###",
+                    "#        #  #  E   #",
+                    "#  E     #  ###### #",
+                    "####  #### E   E   #",
+                    "#  E  #      ####  #",
+                    "###   #  E      ####",
+                    "#      E#####    E #",
+                    "#   #       ########",
+                    "#  E#     E    E   #",
+                    "####################",
+            },
+            {
+                    "####################",
+                    "# E   #    E       #",
+                    "# # #E# # # # #    #",
+                    "#       #     E    #",
+                    "## # #E  #E# # # # #",
+                    "#          #  E  E #",
+                    "# # #   # # # # #  #",
+                    "#   E   # E    E   #",
+                    "## # # # # # #   # #",
+                    "#   E       E      #",
+                    "# # # # #E#   # # ##",
+                    "#     #        #   #",
+                    "#  # # # ##### ### #",
+                    "#      #   #       #",
+                    "#         P    #   #",
+                    "####################",
+            },
     };
 
     private PlayerTank playerTank;
-    private ResourceManager resources;
 
     public LevelScene(ResourceManager resources) {
-        super();
-
-        setResources(resources);
+        super(resources);
     }
 
     public void loadLevel(int level) {
@@ -34,12 +60,17 @@ public class LevelScene extends Scene {
             for (int x = 0; x < row.length(); x++) {
                 char c = row.charAt(x);
                 if (c == '#') {
-                    addGObject(new Wall(this, x * 16, y * 16, resources));
+                    addGObject(new Wall(this, x * 16, y * 16, getResources()));
                 }
                 else if (c == 'P') {
-                    setPlayerTank(new PlayerTank(this, x * 16, y * 16, resources));
+                    setPlayerTank(new PlayerTank(this, x * 16, y * 16, getResources()));
                     addGObject(getPlayerTank());
                 }
+                else if (c == 'E') {
+                    addGObject(new EnemyTank(this, x * 16, y * 16, getResources()));
+                }
+                addBKGGObject(new GObject(this, x * 16, y * 16, 16, 16,
+                        new Sprite(getResources().getTextureRegion("floor"), 0)));
             }
         }
     }
@@ -50,13 +81,5 @@ public class LevelScene extends Scene {
 
     public void setPlayerTank(PlayerTank playerTank) {
         this.playerTank = playerTank;
-    }
-
-    public ResourceManager getResources() {
-        return resources;
-    }
-
-    public void setResources(ResourceManager resources) {
-        this.resources = resources;
     }
 }

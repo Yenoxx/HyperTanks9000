@@ -20,6 +20,10 @@ public class Camera implements Drawable {
 
     @Override
     public void draw(SpriteBatch batch, float x, float y, float scale) {
+        for (GObject object : getScene().getBackground()) {
+            object.getSprite().draw(
+                    batch, x + object.getX() * scale, y + object.getY() * scale, scale);
+        }
         for (GObject object : getScene().getObjects()) {
             object.getSprite().draw(
                     batch, x + object.getX() * scale, y + object.getY() * scale, scale);

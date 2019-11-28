@@ -1,5 +1,6 @@
 package com.yenoxx.ht9k;
 
+import com.yenoxx.ht9k.object.EnemyTank;
 import com.yenoxx.ht9k.object.Tank;
 
 public class Player {
@@ -23,12 +24,14 @@ public class Player {
             getTank().setVx(getTank().getSpeed());
         }
         else if (fire) {
-            // TODO: add shoot mechanics
+            getTank().shoot();
         }
         else  {
             getTank().setVx(0);
             getTank().setVy(0);
         }
+
+        if (EnemyTank.count <= 0) System.out.println("Win");
     }
 
     public Tank getTank() {

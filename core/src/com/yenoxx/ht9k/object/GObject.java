@@ -1,7 +1,6 @@
 package com.yenoxx.ht9k.object;
 
 import com.yenoxx.ht9k.Dynamic;
-import com.yenoxx.ht9k.Utils;
 import com.yenoxx.ht9k.graphics.Sprite;
 import com.yenoxx.ht9k.scene.Scene;
 
@@ -18,6 +17,11 @@ public class GObject implements Dynamic {
 
     private boolean destroyed;
 
+    private boolean solid;
+    private boolean ignoring;
+
+    private String type;
+
     private Sprite sprite;
 
     public GObject(Scene scene, float x, float y, float w, float h, Sprite sprite) {
@@ -33,6 +37,11 @@ public class GObject implements Dynamic {
 
         setDestroyed(false);
 
+        setSolid(true);
+        setIgnoring(false);
+
+        setType("object");
+
         setSprite(sprite);
     }
 
@@ -43,11 +52,13 @@ public class GObject implements Dynamic {
 
     public boolean isCollided(float ox, float oy, GObject object) {
         return
-                getX() + ox + getW() >= object.getX() &&
-                getX() + ox <= object.getX() + object.getW() &&
-                getY() + oy + getH()>= object.getY() &&
-                getY() + oy <= object.getY() + object.getH();
+                getX() + ox + getW() > object.getX() &&
+                getX() + ox < object.getX() + object.getW() &&
+                getY() + oy + getH()> object.getY() &&
+                getY() + oy < object.getY() + object.getH();
     }
+
+    public void onDestroy() {}
 
     public Scene getScene() {
         return scene;
@@ -119,5 +130,29 @@ public class GObject implements Dynamic {
 
     public void setSprite(Sprite sprite) {
         this.sprite = sprite;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public boolean isSolid() {
+        return solid;
+    }
+
+    public void setSolid(boolean solid) {
+        this.solid = solid;
+    }
+
+    public boolean isIgnoring() {
+        return ignoring;
+    }
+
+    public void setIgnoring(boolean ignoring) {
+        this.ignoring = ignoring;
     }
 }

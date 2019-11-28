@@ -8,5 +8,7 @@ public class Wall extends GObject {
     public Wall(Scene scene, float x, float y, ResourceManager resources) {
         super(scene, x, y, 16, 16, new Sprite(
                 resources.getTextureRegion("wall"), 0));
+
+        setType("wall");
     }
 }

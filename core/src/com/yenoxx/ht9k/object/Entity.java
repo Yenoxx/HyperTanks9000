@@ -12,39 +12,42 @@ public class Entity extends GObject {
     @Override
     public void update(float dt) {
         super.update(dt);
-
         getSprite().update(dt);
 
-        boolean collX = false;
-        boolean collY = false;
+        boolean stopX = false;
+        boolean stopY = false;
 
         for (GObject other : getScene().getObjects()) {
             if (!equals(other)) {
                 if (isCollided(getVx() * dt, 0, other)) {
-                    while (!isCollided(0.01f * Utils.sign(getVx()),
-                            0, other)) {
-                        setX(getX() + 0.01f * Utils.sign(getVx()));
+                    if (!isIgnoring() && other.isSolid()) {
+                        while (!isCollided(0.01f * Utils.sign(getVx()),
+                                0, other)) {
+                            setX(getX() + 0.01f * Utils.sign(getVx()));
+                        }
+                        stopX = true;
                     }
-                    collX = true;
+                    collide(other);
+                    other.collide(this);
                 }
                 if (isCollided(0, getVy() * dt, other)) {
-                    while (!isCollided(0,
-                            0.01f * Utils.sign(getVy()), other)) {
-                        setY(getY() + 0.01f * Utils.sign(getVy()));
+                    if (!isIgnoring() && other.isSolid()) {
+                        while (!isCollided(0,
+                                0.01f * Utils.sign(getVy()), other)) {
+                            setY(getY() + 0.01f * Utils.sign(getVy()));
+                        }
+                        stopY = true;
                     }
-                    collY = true;
-                }
-                if (collX || collY) {
                     collide(other);
                     other.collide(this);
                 }
             }
         }
 
-        if (!collX) {
+        if (!stopX) {
             setX(getX() + getVx() * dt);
         }
-        if (!collY) {
+        if (!stopY) {
             setY(getY() + getVy() * dt);
         }
     }

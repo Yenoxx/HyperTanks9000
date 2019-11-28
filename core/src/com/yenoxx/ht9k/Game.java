@@ -34,9 +34,12 @@ public class Game extends ApplicationAdapter {
 	private Widget buttonRight;
 	private Widget buttonFire;
 
+	private float scale;
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		scale = Gdx.graphics.getHeight() / 512f;
 
 
 		// ########## RESOURCE MANAGEMENT ##########
@@ -62,36 +65,42 @@ public class Game extends ApplicationAdapter {
 				0, 32, 16, 16);
 		resources.addTextureRegion("buttonUp", "tiles",
 				16, 32, 16, 16);
+		resources.addTextureRegion("explosion1", "tiles",
+				32, 32, 16, 16);
+		resources.addTextureRegion("explosion2", "tiles",
+				48, 32, 16, 16);
 		resources.addTextureRegion("buttonLeft", "tiles",
 				0, 48, 16, 16);
 		resources.addTextureRegion("buttonDown", "tiles",
 				16, 48, 16, 16);
 		resources.addTextureRegion("buttonRight", "tiles",
 				32, 48, 16, 16);
+		resources.addTextureRegion("bullet", "tiles",
+				52, 52, 8, 8);
 
 
 		// ########## SCENE MANAGEMENT ##########
 		sceneMain = new LevelScene(resources);
 		camera = new Camera(sceneMain);
 
-		sceneMain.loadLevel(1);
+		sceneMain.loadLevel(2);
 
 		player = new Player(sceneMain.getPlayerTank());
 
 
 		// ########## USER INTERFACE ##########
-		ui = new UI(4);
+		ui = new UI(6 * scale);
 		Gdx.input.setInputProcessor(ui.getUiInputAdapter());
 
-		buttonUp = new Widget(20, 20, 16, 16,
+		buttonUp = new Widget(18, 18, 16, 16,
 				new Sprite(resources.getTextureRegion("buttonUp"), 0));
-		buttonDown = new Widget(20, 2, 16, 16,
+		buttonDown = new Widget(18, 2, 16, 16,
 				new Sprite(resources.getTextureRegion("buttonDown"), 0));
 		buttonLeft = new Widget(2, 2, 16, 16,
 				new Sprite(resources.getTextureRegion("buttonLeft"), 0));
-		buttonRight = new Widget(38, 2, 16, 16,
+		buttonRight = new Widget(34, 2, 16, 16,
 				new Sprite(resources.getTextureRegion("buttonRight"), 0));
-		buttonFire = new Widget((int) (Gdx.graphics.getWidth() / ui.getSize()) - 20,
+		buttonFire = new Widget((int) (Gdx.graphics.getWidth() / ui.getSize()) - 18,
 				2, 16, 16,
 				new Sprite(resources.getTextureRegion("buttonFire"), 0));
 
@@ -106,13 +115,13 @@ public class Game extends ApplicationAdapter {
 	public void render () {
 		sceneMain.update(Gdx.graphics.getDeltaTime());
 		player.updateState(buttonUp.isClicked(), buttonDown.isClicked(),
-				buttonLeft.isClicked(), buttonRight.isClicked(), false);
+				buttonLeft.isClicked(), buttonRight.isClicked(), buttonFire.isClicked());
 
-		Gdx.gl.glClearColor(1, 1, 1, 1);
+		Gdx.gl.glClearColor(0.3f, 0.3f, 0.3f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		batch.begin();
-		camera.draw(batch, 0, 0, 4);
+		camera.draw(batch, Gdx.graphics.getWidth() / 2f - 320 * scale, 0, 2 * scale);
 		ui.draw(batch);
 		batch.end();
 	}
