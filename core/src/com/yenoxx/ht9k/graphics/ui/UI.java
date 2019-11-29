@@ -43,6 +43,10 @@ public class UI implements Drawable {
         draw(batch, 0, 0, getSize());
     }
 
+    public void select() {
+        Gdx.input.setInputProcessor(getUiInputAdapter());
+    }
+
     protected ArrayList<Widget> getWidgets() {
         return widgets;
     }

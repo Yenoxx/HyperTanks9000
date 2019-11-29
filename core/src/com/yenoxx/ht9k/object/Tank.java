@@ -19,7 +19,7 @@ public class Tank extends Entity {
     private Bullet bullet;
 
     public Tank(Scene scene, float x, float y, int team, TextureRegion t1, TextureRegion t2) {
-        super(scene, x, y, 15.9f, 15.9f, new Sprite(
+        super(scene, x, y, 15.7f, 15.7f, new Sprite(
                 t1, t2, SPRITE_UT));
 
         setSolid(true);
@@ -27,6 +27,8 @@ public class Tank extends Entity {
         setTeam(team);
         setSpeed(32);
         setBulletSpeed(48);
+
+        cd = (float) (Math.random() * 2);
 
         setBullet(new Bullet(getScene(), 0, 0, 0, 0, getTeam(),
                 getScene().getResources()));

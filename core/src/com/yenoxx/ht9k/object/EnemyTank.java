@@ -5,11 +5,14 @@ import com.yenoxx.ht9k.scene.Scene;
 
 public class EnemyTank extends Tank {
     public static int count;
+    public float turnCd;
 
     public EnemyTank(Scene scene, float x, float y, ResourceManager resources) {
         super(scene, x, y, 2, resources.getTextureRegion("tank21"),
                 resources.getTextureRegion("tank22"));
         count++;
+
+        turnCd = 0;
 
         setDir((int) Math.floor(Math.random() * 3));
     }
@@ -33,6 +36,8 @@ public class EnemyTank extends Tank {
             setVy(0);
         }
 
+        if (turnCd > 0) turnCd -= dt;
+
         shoot();
 
         super.update(dt);
@@ -40,9 +45,13 @@ public class EnemyTank extends Tank {
 
     @Override
     public void collide(GObject object) {
-        if (object.getType().equals("wall") || object.getType().equals("tank"))
-            if (Math.random() < 0.5) setDir((getDir() + 1) % 4);
-            else setDir((getDir() + 3) % 4);
+        if (turnCd <= 0) {
+            if (object.getType().equals("wall") || object.getType().equals("tank")) {
+                if (Math.random() < 0.5) setDir((getDir() + 1) % 4);
+                else setDir((getDir() + 3) % 4);
+            }
+            turnCd = 0.5f;
+        }
     }
 
     @Override
