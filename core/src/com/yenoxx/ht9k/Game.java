@@ -158,7 +158,8 @@ public class Game extends ApplicationAdapter {
 			batch.end();
 		}
 	 	else if (state.equals("game")) {
-			sceneMain.update(Gdx.graphics.getDeltaTime());
+			sceneMain.update(Gdx.graphics.getDeltaTime() > 0.5f
+					? 0.5f : Gdx.graphics.getDeltaTime());
 			player.updateState(buttonUp.isClicked(), buttonDown.isClicked(),
 					buttonLeft.isClicked(), buttonRight.isClicked(), buttonFire.isClicked());
 
@@ -226,7 +227,12 @@ public class Game extends ApplicationAdapter {
 			batch.end();
 		}
 	}
-	
+
+	@Override
+	public void resize(int width, int height) {
+		super.resize(width, height);
+	}
+
 	@Override
 	public void dispose () {
 		batch.dispose();
