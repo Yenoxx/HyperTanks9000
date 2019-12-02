@@ -43,6 +43,7 @@ public class Game extends ApplicationAdapter {
 	private Widget buttonLeft;
 	private Widget buttonRight;
 	private Widget buttonFire;
+	private Widget buttonPause;
 
 	private float scale;
 
@@ -60,58 +61,7 @@ public class Game extends ApplicationAdapter {
 		currentLevel = 1;
 
 		// ########## RESOURCE MANAGEMENT ##########
-		resources = new ResourceManager();
-
-		resources.loadTexture("tiles", "tiles.png");
-		resources.loadTexture("menu", "menu.png");
-
-		resources.addTextureRegion("tank11", "tiles",
-				0, 0, 16, 16);
-		resources.addTextureRegion("tank12", "tiles",
-				16, 0, 16, 16);
-		resources.addTextureRegion("tank21", "tiles",
-				32, 0, 16, 16);
-		resources.addTextureRegion("tank22", "tiles",
-				48, 0, 16, 16);
-		resources.addTextureRegion("wall", "tiles",
-				0, 16, 16, 16);
-		resources.addTextureRegion("floor", "tiles",
-				16, 16, 16, 16);
-		resources.addTextureRegion("base1", "tiles",
-				32, 16, 16, 16);
-		resources.addTextureRegion("base2", "tiles",
-				48, 16, 16, 16);
-		resources.addTextureRegion("buttonFire", "tiles",
-				0, 32, 16, 16);
-		resources.addTextureRegion("buttonUp", "tiles",
-				16, 32, 16, 16);
-		resources.addTextureRegion("explosion1", "tiles",
-				32, 32, 16, 16);
-		resources.addTextureRegion("explosion2", "tiles",
-				48, 32, 16, 16);
-		resources.addTextureRegion("buttonLeft", "tiles",
-				0, 48, 16, 16);
-		resources.addTextureRegion("buttonDown", "tiles",
-				16, 48, 16, 16);
-		resources.addTextureRegion("buttonRight", "tiles",
-				32, 48, 16, 16);
-		resources.addTextureRegion("bullet", "tiles",
-				52, 52, 8, 8);
-
-		resources.addTextureRegion("logo", "menu",
-				0, 0, 64, 32);
-		resources.addTextureRegion("labelWin", "menu",
-				0, 32, 64, 16);
-		resources.addTextureRegion("labelLose", "menu",
-				0, 48, 64, 16);
-		resources.addTextureRegion("buttonPlay", "menu",
-				0, 64, 32, 16);
-		resources.addTextureRegion("buttonExit", "menu",
-				32, 64, 32, 16);
-		resources.addTextureRegion("buttonNext", "menu",
-				0, 80, 32, 16);
-		resources.addTextureRegion("buttonAgain", "menu",
-				32, 80, 32, 16);
+		resources = new HT9KResourceManager();
 
 
 		// ########## SCENE MANAGEMENT ##########
@@ -137,12 +87,16 @@ public class Game extends ApplicationAdapter {
 		buttonFire = new Widget((int) (Gdx.graphics.getWidth() / ui.getSize()) - 18,
 				2, 16, 16,
 				new Sprite(resources.getTextureRegion("buttonFire"), 0));
+		buttonPause = new Widget(2,
+				(int) (Gdx.graphics.getHeight() / ui.getSize()) - 18, 16, 16,
+				new Sprite(resources.getTextureRegion("buttonPause"), 0));
 
 		ui.addWidget(buttonUp);
 		ui.addWidget(buttonDown);
 		ui.addWidget(buttonLeft);
 		ui.addWidget(buttonRight);
 		ui.addWidget(buttonFire);
+		ui.addWidget(buttonPause);
 
 		menu = new UI(6 * scale); // Menu UI
 		menu.select();
@@ -208,6 +162,11 @@ public class Game extends ApplicationAdapter {
 			player.updateState(buttonUp.isClicked(), buttonDown.isClicked(),
 					buttonLeft.isClicked(), buttonRight.isClicked(), buttonFire.isClicked());
 
+			if (buttonPause.isClicked()) {
+				buttonPause.setClicked(false);
+				state = "menu";
+				menu.select();
+			}
 			if (EnemyTank.count <= 0) {
 				state = "menu_win";
 				winMenu.select();

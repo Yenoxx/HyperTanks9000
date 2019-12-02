@@ -117,7 +117,8 @@ public class LevelScene extends Scene {
                     addGObject(new Wall(this, x * 16, y * 16, getResources()));
                 }
                 else if (c == 'P') {
-                    setPlayerTank(new PlayerTank(this, x * 16, y * 16, getResources()));
+                    setPlayerTank(new PlayerTank(this, x * 16, y * 16, level,
+                            getResources()));
                     addGObject(getPlayerTank());
                 }
                 else if (c == 'E') {

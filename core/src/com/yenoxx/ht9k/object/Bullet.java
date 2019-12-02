@@ -10,7 +10,8 @@ public class Bullet extends Entity {
     public Bullet(Scene scene, float x, float y, float vx, float vy, int team,
                   ResourceManager resources) {
         super(scene, x, y, 8, 8, new Sprite(
-                resources.getTextureRegion("bullet"), 0));
+                resources.getTextureRegion("bullet1"),
+                resources.getTextureRegion("bullet2"), 0.2f));
 
         setSolid(false);
         setIgnoring(true);

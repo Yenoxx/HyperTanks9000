@@ -15,6 +15,7 @@ public class Tank extends Entity {
     private int dir;
 
     private float cd;
+    private float cdTime;
 
     private Bullet bullet;
 
@@ -28,7 +29,8 @@ public class Tank extends Entity {
         setSpeed(32);
         setBulletSpeed(48);
 
-        cd = (float) (Math.random() * 2);
+        setCd((float) (Math.random() * 2));
+        setCdTime(2);
 
         setBullet(new Bullet(getScene(), 0, 0, 0, 0, getTeam(),
                 getScene().getResources()));
@@ -61,13 +63,13 @@ public class Tank extends Entity {
             getSprite().setUt(0);
         }
 
-        if (cd > 0) cd -= dt;
+        if (getCd() > 0) setCd(getCd() - dt);
 
         super.update(dt);
     }
 
     public void shoot() {
-        if (cd <= 0) {
+        if (getCd() <= 0) {
             if (getBullet().isDestroyed()) {
                 getBullet().setDestroyed(false);
                 if (getDir() == 0) {
@@ -93,7 +95,7 @@ public class Tank extends Entity {
                 }
                 getScene().addGObject(getBullet());
             }
-            cd = 2;
+            setCd(getCdTime());
         }
     }
 
@@ -109,7 +111,7 @@ public class Tank extends Entity {
         return speed;
     }
 
-    private void setSpeed(float speed) {
+    public void setSpeed(float speed) {
         this.speed = speed;
     }
 
@@ -135,5 +137,21 @@ public class Tank extends Entity {
 
     public void setBullet(Bullet bullet) {
         this.bullet = bullet;
+    }
+
+    public float getCdTime() {
+        return cdTime;
+    }
+
+    public void setCdTime(float cdTime) {
+        this.cdTime = cdTime;
+    }
+
+    public float getCd() {
+        return cd;
+    }
+
+    public void setCd(float cd) {
+        this.cd = cd;
     }
 }
